@@ -1,4 +1,4 @@
-package org.example;
+package org.example.hellohibernatejavafx.utils;
 
 import java.util.List;
 import java.util.Optional;

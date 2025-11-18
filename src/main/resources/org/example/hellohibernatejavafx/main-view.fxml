@@ -2,15 +2,42 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.hellohibernatejavafx.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hellohibernatejavafx.MainController">
+   <center>
+      <VBox alignment="CENTER" spacing="20.0">
+          <padding>
+              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+          </padding>
+      
+             <Label fx:id="welcomeText" text="Listado de videojuegos">
+            <font>
+               <Font size="25.0" />
+            </font>
+         </Label>
+         <TableView fx:id="tabla" prefHeight="200.0" prefWidth="200.0">
+           <columns>
+               <TableColumn prefWidth="75.0" text="Indentificadores">
+                  <columns>
+                   <TableColumn fx:id="cId" prefWidth="75.0" text="id" />
+                   <TableColumn fx:id="cUser" prefWidth="75.0" text="user" />
+                  </columns>
+               </TableColumn>
+               <TableColumn fx:id="cTitulo" prefWidth="75.0" text="Titulo" />
+               <TableColumn fx:id="cPlataforma" prefWidth="75.0" text="Plataforma" />
+               <TableColumn fx:id="cAño" prefWidth="75.0" text="Antigüedad" />
+               <TableColumn fx:id="cDescripcion" prefWidth="75.0" text="Descripción" />
+           </columns>
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+         </TableView>
+      </VBox>
+   </center>
+</BorderPane>

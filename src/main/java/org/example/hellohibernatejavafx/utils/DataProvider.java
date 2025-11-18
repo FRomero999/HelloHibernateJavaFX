@@ -1,4 +1,4 @@
-package org.example;
+package org.example.hellohibernatejavafx.utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

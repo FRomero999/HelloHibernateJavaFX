@@ -7,7 +7,7 @@
     <session-factory>
         <!-- Configuración de la conexión a MySQL -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ad?useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ad</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">root</property>
 
@@ -23,7 +23,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mapeo de clases de entidad (añade tus clases aquí) -->
-        <mapping class="org.example.hellohibernatejavafx.game.Game"/>
+        <mapping class="org.example.GestorVideojuegosHibernateJavaFX.game.Game"/>
         <!-- <mapping class="com.tuempresa.modelo.Producto"/> -->
 
     </session-factory>

@@ -1,4 +1,4 @@
-package org.example.hellohibernatejavafx.utils;
+package org.example.GestorVideojuegosHibernateJavaFX.utils;
 
 import java.util.List;
 import java.util.Optional;

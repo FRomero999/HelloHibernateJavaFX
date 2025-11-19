@@ -1,6 +1,5 @@
-package org.example.hellohibernatejavafx;
+package org.example.GestorVideojuegosHibernateJavaFX.controllers;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -8,10 +7,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.Callback;
-import org.example.hellohibernatejavafx.game.Game;
-import org.example.hellohibernatejavafx.game.GameRepository;
-import org.example.hellohibernatejavafx.utils.DataProvider;
-import org.example.hellohibernatejavafx.utils.JavaFXUtil;
+import org.example.GestorVideojuegosHibernateJavaFX.game.Game;
+import org.example.GestorVideojuegosHibernateJavaFX.game.GameRepository;
+import org.example.GestorVideojuegosHibernateJavaFX.utils.DataProvider;
+import org.example.GestorVideojuegosHibernateJavaFX.utils.JavaFXUtil;
 
 import java.net.URL;
 import java.time.LocalDateTime;

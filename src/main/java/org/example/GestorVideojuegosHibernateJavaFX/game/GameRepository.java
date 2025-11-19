@@ -1,6 +1,6 @@
-package org.example.hellohibernatejavafx.game;
+package org.example.GestorVideojuegosHibernateJavaFX.game;
 
-import org.example.hellohibernatejavafx.utils.Repository;
+import org.example.GestorVideojuegosHibernateJavaFX.utils.Repository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 

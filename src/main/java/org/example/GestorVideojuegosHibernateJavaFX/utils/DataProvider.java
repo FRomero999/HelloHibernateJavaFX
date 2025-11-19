@@ -1,4 +1,4 @@
-package org.example.hellohibernatejavafx.utils;
+package org.example.GestorVideojuegosHibernateJavaFX.utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

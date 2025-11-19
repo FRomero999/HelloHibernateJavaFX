@@ -1,4 +1,4 @@
-package org.example.hellohibernatejavafx;
+package org.example.GestorVideojuegosHibernateJavaFX;
 
 import javafx.application.Application;
 

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>HelloHibernateJavaFX</artifactId>
+    <artifactId>GestorVideojuegosHibernateJavaFX</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>HelloHibernateJavaFX</name>
 
@@ -80,7 +80,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                org.example.hellohibernatejavafx/org.example.hellohibernatejavafx.App
+                                org.example.hellohibernatejavafx/org.example.GestorVideojuegosHibernateJavaFX.App
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

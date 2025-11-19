@@ -1,4 +1,4 @@
-package org.example.hellohibernatejavafx.game;
+package org.example.GestorVideojuegosHibernateJavaFX.game;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

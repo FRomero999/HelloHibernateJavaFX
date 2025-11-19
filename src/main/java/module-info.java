@@ -1,4 +1,4 @@
-module org.example.hellohibernatejavafx {
+module org.example.GestorVideojuegosHibernateJavaFX {
     requires javafx.controls;
     requires javafx.fxml;
     requires static lombok;
@@ -7,10 +7,12 @@ module org.example.hellohibernatejavafx {
     requires java.naming;
 
 
-    opens org.example.hellohibernatejavafx;
-    exports org.example.hellohibernatejavafx;
-    exports org.example.hellohibernatejavafx.game;
-    opens org.example.hellohibernatejavafx.game;
-    exports org.example.hellohibernatejavafx.utils;
-    opens org.example.hellohibernatejavafx.utils;
+    opens org.example.GestorVideojuegosHibernateJavaFX;
+    exports org.example.GestorVideojuegosHibernateJavaFX;
+    exports org.example.GestorVideojuegosHibernateJavaFX.game;
+    opens org.example.GestorVideojuegosHibernateJavaFX.game;
+    exports org.example.GestorVideojuegosHibernateJavaFX.utils;
+    opens org.example.GestorVideojuegosHibernateJavaFX.utils;
+    exports org.example.GestorVideojuegosHibernateJavaFX.controllers;
+    opens org.example.GestorVideojuegosHibernateJavaFX.controllers;
 }

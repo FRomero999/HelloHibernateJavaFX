@@ -1,4 +1,4 @@
-package org.example.hellohibernatejavafx.utils;
+package org.example.GestorVideojuegosHibernateJavaFX.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

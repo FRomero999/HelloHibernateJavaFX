@@ -36,11 +36,12 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Game,String> cId;
 
+    SessionService sessionService = new SessionService();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        System.out.println( (new SessionService().getActiveUser() ));
+        System.out.println( sessionService.getActiveUser() );
 
         cId.setCellValueFactory( (row)->{
             return new SimpleStringProperty(row.getValue().getId().toString());
@@ -68,7 +69,12 @@ public class MainController implements Initializable {
         GameRepository gameRepository = new GameRepository(DataProvider.getSessionFactory());
 
         List<Game> games = gameRepository.findAll();
-        tabla.getItems().addAll(games);
+        games.forEach((game)->{
+            if(game.getUser_id()== sessionService.getActiveUser().getId()) {
+                tabla.getItems().add(game);
+            }
+        });
+
     }
 
     private static Callback<TableColumn.CellDataFeatures<Game, String>, ObservableValue<String>> userColumnValue() {

@@ -7,6 +7,7 @@ module org.example.GestorVideojuegosHibernateJavaFX {
     requires java.naming;
 
 
+    opens org.example.GestorVideojuegosHibernateJavaFX.user;
     opens org.example.GestorVideojuegosHibernateJavaFX;
     exports org.example.GestorVideojuegosHibernateJavaFX;
     exports org.example.GestorVideojuegosHibernateJavaFX.game;

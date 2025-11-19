@@ -1,10 +1,20 @@
 package org.example.GestorVideojuegosHibernateJavaFX.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.example.GestorVideojuegosHibernateJavaFX.services.AuthService;
+import org.example.GestorVideojuegosHibernateJavaFX.services.SessionService;
+import org.example.GestorVideojuegosHibernateJavaFX.user.User;
+import org.example.GestorVideojuegosHibernateJavaFX.user.UserRepository;
+import org.example.GestorVideojuegosHibernateJavaFX.utils.DataProvider;
 import org.example.GestorVideojuegosHibernateJavaFX.utils.JavaFXUtil;
 
-public class LoginController {
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+public class LoginController implements Initializable {
     @javafx.fxml.FXML
     private TextField txtContraseña;
     @javafx.fxml.FXML
@@ -12,13 +22,28 @@ public class LoginController {
     @javafx.fxml.FXML
     private Label info;
 
+    private UserRepository userRepository;
+    private AuthService authService;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        userRepository = new UserRepository(DataProvider.getSessionFactory());
+        authService = new AuthService(userRepository);
+    }
+
     @javafx.fxml.FXML
     public void entrar(ActionEvent actionEvent) {
-        JavaFXUtil.setScene("/org/example/GestorVideojuegosHibernateJavaFX/main-view.fxml");
+        Optional<User> user = authService.validateUser(txtCorreo.getText(),txtContraseña.getText() );
+        if (user.isPresent()){
+            new SessionService().login(user.get());
+            JavaFXUtil.setScene("/org/example/GestorVideojuegosHibernateJavaFX/main-view.fxml");
+        }
     }
 
     @javafx.fxml.FXML
     public void Salir(ActionEvent actionEvent) {
         System.exit(0);
     }
+
+
 }

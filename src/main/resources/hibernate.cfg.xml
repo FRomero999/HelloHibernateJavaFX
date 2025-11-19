@@ -24,6 +24,7 @@
 
         <!-- Mapeo de clases de entidad (añade tus clases aquí) -->
         <mapping class="org.example.GestorVideojuegosHibernateJavaFX.game.Game"/>
+        <mapping class="org.example.GestorVideojuegosHibernateJavaFX.user.User"/>
         <!-- <mapping class="com.tuempresa.modelo.Producto"/> -->
 
     </session-factory>

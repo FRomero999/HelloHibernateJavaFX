@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 import org.example.GestorVideojuegosHibernateJavaFX.game.Game;
 import org.example.GestorVideojuegosHibernateJavaFX.game.GameRepository;
+import org.example.GestorVideojuegosHibernateJavaFX.services.SessionService;
 import org.example.GestorVideojuegosHibernateJavaFX.utils.DataProvider;
 import org.example.GestorVideojuegosHibernateJavaFX.utils.JavaFXUtil;
 
@@ -38,6 +39,9 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        System.out.println( (new SessionService().getActiveUser() ));
+
         cId.setCellValueFactory( (row)->{
             return new SimpleStringProperty(row.getValue().getId().toString());
         });

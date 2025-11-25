@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.example.GestorVideojuegosHibernateJavaFX.services.AuthService;
 import org.example.GestorVideojuegosHibernateJavaFX.services.SessionService;
+import org.example.GestorVideojuegosHibernateJavaFX.services.SimpleSessionService;
 import org.example.GestorVideojuegosHibernateJavaFX.user.User;
 import org.example.GestorVideojuegosHibernateJavaFX.user.UserRepository;
 import org.example.GestorVideojuegosHibernateJavaFX.utils.DataProvider;
@@ -35,7 +36,9 @@ public class LoginController implements Initializable {
     public void entrar(ActionEvent actionEvent) {
         Optional<User> user = authService.validateUser(txtCorreo.getText(),txtContraseña.getText() );
         if (user.isPresent()){
-            new SessionService().login(user.get());
+            SimpleSessionService sessionService = new SimpleSessionService();
+            sessionService.login(user.get());
+            sessionService.setObject("id", user.get().getId());
             JavaFXUtil.setScene("/org/example/GestorVideojuegosHibernateJavaFX/main-view.fxml");
         }
     }

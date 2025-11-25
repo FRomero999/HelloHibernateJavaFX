@@ -2,24 +2,12 @@ package org.example.GestorVideojuegosHibernateJavaFX.services;
 
 import org.example.GestorVideojuegosHibernateJavaFX.user.User;
 
-public class SessionService {
+public interface SessionService<T> {
+    void login(T u);
+    boolean isLoggedIn();
+    void logout();
+    T getActive();
 
-    private static User activeUser = null;
-
-    public void login(User user) {
-        activeUser = user;
-    }
-
-    public boolean isLoggedIn(){
-        return activeUser != null;
-    }
-
-    public User getActiveUser() {
-        return activeUser;
-    }
-
-    public void logout() {
-        activeUser = null;
-    }
-
+    void setObject( String key, Object o );
+    Object getObject(String key);
 }

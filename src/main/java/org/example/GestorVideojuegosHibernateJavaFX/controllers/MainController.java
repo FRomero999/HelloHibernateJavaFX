@@ -3,15 +3,18 @@ package org.example.GestorVideojuegosHibernateJavaFX.controllers;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 import org.example.GestorVideojuegosHibernateJavaFX.game.Game;
 import org.example.GestorVideojuegosHibernateJavaFX.game.GameRepository;
-import org.example.GestorVideojuegosHibernateJavaFX.services.SessionService;
+import org.example.GestorVideojuegosHibernateJavaFX.services.SimpleSessionService;
+import org.example.GestorVideojuegosHibernateJavaFX.user.User;
 import org.example.GestorVideojuegosHibernateJavaFX.utils.DataProvider;
 import org.example.GestorVideojuegosHibernateJavaFX.utils.JavaFXUtil;
+import org.hibernate.Session;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -30,29 +33,36 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Game,String> cAño;
     @FXML
-    private TableColumn<Game,String> cUser;
-    @FXML
     private TableView<Game> tabla;
     @FXML
     private TableColumn<Game,String> cId;
+    @FXML
+    private Label lblUsuario;
+    @FXML
+    private Button btnBorrar;
+    @FXML
+    private Button btnAñadir;
 
-    SessionService sessionService = new SessionService();
+    SimpleSessionService simpleSessionService = new SimpleSessionService();
+    GameRepository gameRepository = new GameRepository(DataProvider.getSessionFactory());
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        System.out.println( sessionService.getActiveUser() );
+        lblUsuario.setText("Juegos del usuario " + simpleSessionService.getActive().getEmail() );
 
         cId.setCellValueFactory( (row)->{
-            return new SimpleStringProperty(row.getValue().getId().toString());
+            return new SimpleStringProperty(String.valueOf(row.getValue().getId()));
         });
         cTitulo.setCellValueFactory( (row)->{
             String title = row.getValue().getTitle();
             /* ..... */
             return new SimpleStringProperty(title);
         });
-        cUser.setCellValueFactory(userColumnValue());
         cAño.setCellValueFactory( (row)->{
+            if(row.getValue().getYear()==null){
+                return new SimpleStringProperty("-");
+            }
             Integer year = row.getValue().getYear();
             Integer antigüedad = LocalDateTime.now().getYear() - year;
             return new SimpleStringProperty(antigüedad.toString()+" años");
@@ -66,26 +76,10 @@ public class MainController implements Initializable {
 
         tabla.getSelectionModel().selectedItemProperty().addListener(showGame());
 
-        GameRepository gameRepository = new GameRepository(DataProvider.getSessionFactory());
-
-        List<Game> games = gameRepository.findAll();
-        games.forEach((game)->{
-            if(game.getUser_id()== sessionService.getActiveUser().getId()) {
-                tabla.getItems().add(game);
-            }
+        simpleSessionService.getActive().getGames().forEach(game -> {
+            tabla.getItems().add(game);
         });
 
-    }
-
-    private static Callback<TableColumn.CellDataFeatures<Game, String>, ObservableValue<String>> userColumnValue() {
-        return (row) -> {
-            Integer user = row.getValue().getUser_id();
-            if (user == null) {
-                return new SimpleStringProperty("-");
-            } else {
-                return new SimpleStringProperty(user.toString());
-            }
-        };
     }
 
     private ChangeListener<Game> showGame() {
@@ -99,5 +93,55 @@ public class MainController implements Initializable {
                 );
             }
         };
+    }
+
+    @FXML
+    public void borrar(ActionEvent actionEvent) {
+
+        if(tabla.getSelectionModel().getSelectedItem()==null) return;
+        Game selectedGame = tabla.getSelectionModel().getSelectedItem();
+        System.out.println("Borrando " + selectedGame);
+        try(Session s = DataProvider.getSessionFactory().openSession()) {
+            s.beginTransaction();
+
+            // Recargar datos desde la BD
+            User currentUser = s.find(User.class, simpleSessionService.getActive().getId());
+            Game gameToDelete = s.find(Game.class, selectedGame.getId());
+
+            // Buscar y eliminar el juego de la colección y la bbdd
+            currentUser.getGames().removeIf(game -> game.getId().equals(selectedGame.getId()));
+            s.remove(gameToDelete);
+
+            s.getTransaction().commit();
+
+            // Actualizar el usuario local
+            simpleSessionService.update(currentUser);
+        }
+
+        tabla.getItems().clear();
+        simpleSessionService.getActive().getGames().forEach(game -> {
+            tabla.getItems().add(game);
+        });
+    }
+
+    @FXML
+    public void añadir(ActionEvent actionEvent) {
+        Game newGame = new Game();
+        newGame.setTitle("Juego random");
+        newGame.setPlatform("random");
+        simpleSessionService.getActive().addGame(newGame);
+
+        try(Session s = DataProvider.getSessionFactory().openSession()) {
+            s.beginTransaction();
+            s.merge(simpleSessionService.getActive());
+            s.getTransaction().commit();
+
+            simpleSessionService.update( s.find(User.class,simpleSessionService.getActive().getId()));
+        }
+
+        tabla.getItems().clear();
+        simpleSessionService.getActive().getGames().forEach(game -> {
+            tabla.getItems().add(game);
+        });
     }
 }

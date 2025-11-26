@@ -1,6 +1,4 @@
-package org.example.GestorVideojuegosHibernateJavaFX.services;
-
-import org.example.GestorVideojuegosHibernateJavaFX.user.User;
+package org.example.GestorVideojuegosHibernateJavaFX.utils;
 
 public interface SessionService<T> {
     void login(T u);

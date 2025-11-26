@@ -1,6 +1,7 @@
-package org.example.GestorVideojuegosHibernateJavaFX.services;
+package org.example.GestorVideojuegosHibernateJavaFX.session;
 
 import org.example.GestorVideojuegosHibernateJavaFX.user.User;
+import org.example.GestorVideojuegosHibernateJavaFX.utils.SessionService;
 
 import java.util.HashMap;
 

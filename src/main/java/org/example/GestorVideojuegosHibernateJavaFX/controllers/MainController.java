@@ -2,23 +2,20 @@ package org.example.GestorVideojuegosHibernateJavaFX.controllers;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 import org.example.GestorVideojuegosHibernateJavaFX.game.Game;
 import org.example.GestorVideojuegosHibernateJavaFX.game.GameRepository;
-import org.example.GestorVideojuegosHibernateJavaFX.services.SimpleSessionService;
+import org.example.GestorVideojuegosHibernateJavaFX.session.SimpleSessionService;
 import org.example.GestorVideojuegosHibernateJavaFX.user.User;
+import org.example.GestorVideojuegosHibernateJavaFX.user.UserService;
 import org.example.GestorVideojuegosHibernateJavaFX.utils.DataProvider;
 import org.example.GestorVideojuegosHibernateJavaFX.utils.JavaFXUtil;
-import org.hibernate.Session;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -45,6 +42,7 @@ public class MainController implements Initializable {
 
     SimpleSessionService simpleSessionService = new SimpleSessionService();
     GameRepository gameRepository = new GameRepository(DataProvider.getSessionFactory());
+    UserService userService = new UserService();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -100,23 +98,10 @@ public class MainController implements Initializable {
 
         if(tabla.getSelectionModel().getSelectedItem()==null) return;
         Game selectedGame = tabla.getSelectionModel().getSelectedItem();
-        System.out.println("Borrando " + selectedGame);
-        try(Session s = DataProvider.getSessionFactory().openSession()) {
-            s.beginTransaction();
 
-            // Recargar datos desde la BD
-            User currentUser = s.find(User.class, simpleSessionService.getActive().getId());
-            Game gameToDelete = s.find(Game.class, selectedGame.getId());
-
-            // Buscar y eliminar el juego de la colección y la bbdd
-            currentUser.getGames().removeIf(game -> game.getId().equals(selectedGame.getId()));
-            s.remove(gameToDelete);
-
-            s.getTransaction().commit();
-
-            // Actualizar el usuario local
-            simpleSessionService.update(currentUser);
-        }
+        // Actualizar el usuario local
+        User user = userService.deleteGameFromUser(simpleSessionService.getActive(), selectedGame);
+        simpleSessionService.update(user);
 
         tabla.getItems().clear();
         simpleSessionService.getActive().getGames().forEach(game -> {
@@ -129,15 +114,10 @@ public class MainController implements Initializable {
         Game newGame = new Game();
         newGame.setTitle("Juego random");
         newGame.setPlatform("random");
-        simpleSessionService.getActive().addGame(newGame);
 
-        try(Session s = DataProvider.getSessionFactory().openSession()) {
-            s.beginTransaction();
-            s.merge(simpleSessionService.getActive());
-            s.getTransaction().commit();
-
-            simpleSessionService.update( s.find(User.class,simpleSessionService.getActive().getId()));
-        }
+        User actualUser = simpleSessionService.getActive();
+        User user = userService.createNewGame(newGame, actualUser);
+        simpleSessionService.update(user);
 
         tabla.getItems().clear();
         simpleSessionService.getActive().getGames().forEach(game -> {
